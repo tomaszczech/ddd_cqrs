@@ -8,10 +8,18 @@ import com.czecht.dddcqrs.ddd.annotations.domain.domain.AggregateRoot;
 import com.czecht.dddcqrs.ddd.canonicalmodel.publishedlanguage.AggregateId;
 import com.czecht.dddcqrs.ddd.support.domain.BaseAggregateRoot;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Builder
 @Entity
 @AggregateRoot
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Client extends BaseAggregateRoot {
 
 	private String name;

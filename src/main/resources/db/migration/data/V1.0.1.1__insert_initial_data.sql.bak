@@ -1,3 +1,4 @@
+-- customer data
 insert into customer (aggregate_id, aggregate_status, version, activity, city, post_code, street, name)
 values('CUST50', 1, 0, 'ACTIVE', 'Rzeszow', '34-522', 'Przemyslowa', 'Majster');
 
@@ -6,3 +7,12 @@ values('CUST51', 1, 0, 'ACTIVE', 'Rzeszow', '34-344', 'Podkarpacka', 'Praktiker'
 
 insert into customer (aggregate_id, aggregate_status, version, activity, city, post_code, street, name)
 values('CUST52', 1, 0, 'ACTIVE', 'Krasne', '33-333', 'Krasne', 'LeroyMerlin');
+
+-- product
+
+
+-- order 1
+insert into order_basket (aggregate_id, status, client_id, creation_date, creator, modification_date, modifier)
+values ('ORD20', 'OPENED', 'CUST50', CURRENT_TIMESTAMP(), 'SYSTEM', CURRENT_TIMESTAMP(), 'SYSTEM')
+
+-- insert into order_item

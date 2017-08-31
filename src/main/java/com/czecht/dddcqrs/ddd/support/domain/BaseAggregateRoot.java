@@ -36,7 +36,7 @@ import com.czecht.dddcqrs.ddd.canonicalmodel.publishedlanguage.AggregateId;
 import com.czecht.dddcqrs.ddd.sharedkernel.exceptions.DomainOperationException;
 
 @Component
-@Scope("prototype")//created in domain factories, not in spring container, therefore we don't want eager creation
+@Scope("prototype")
 @MappedSuperclass
 public abstract class BaseAggregateRoot {
 	public static enum AggregateStatus {

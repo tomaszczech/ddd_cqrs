@@ -1,0 +1,1 @@
+insert into client (aggregate_id, aggregate_status, version, name) values('CLT1', 1, 0, 'client1');

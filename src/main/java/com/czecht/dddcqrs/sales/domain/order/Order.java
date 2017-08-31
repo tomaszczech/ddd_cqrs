@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,21 +27,22 @@ import com.czecht.dddcqrs.ddd.support.domain.BaseAggregateRoot;
 import com.czecht.dddcqrs.sales.domain.product.Product;
 import com.czecht.dddcqrs.shared.domain.Audit;
 
+import lombok.Getter;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity
+@Table(name = "order_basket")
 @AggregateRoot
 public class Order extends BaseAggregateRoot {
 
-	public enum ProductionOrderStatus {
-		OPENED, CLOSED, INACTIVE
-	}
+	public enum OrderStatus { OPENED, CLOSED, INACTIVE }
 
 	@Enumerated(EnumType.STRING)
-	private ProductionOrderStatus status;
+	private OrderStatus status = OrderStatus.OPENED;
 
-	@Embedded
-		@AttributeOverrides({
+	@Getter
+	@Embedded @AttributeOverrides({
 				@AttributeOverride(name = "aggregateId", column = @Column(name = "clientId", nullable = false))})
 	private AggregateId clientId;
 
@@ -54,6 +56,13 @@ public class Order extends BaseAggregateRoot {
 
 	public Order(AggregateId clientId) {
 		this.clientId = checkNotNull(clientId);
+	}
+
+	@Invariant({"closed"})
+	public void close(){
+		if (isClosed())
+			domainError("Reservation is already closed");
+		status = OrderStatus.CLOSED;
 	}
 
 	@Invariant({ "closed", "duplicates" })
@@ -96,7 +105,7 @@ public class Order extends BaseAggregateRoot {
 	}
 
 	public boolean isClosed() {
-		return status.equals(ProductionOrderStatus.CLOSED);
+		return status.equals(OrderStatus.CLOSED);
 	}
 
 	public Money calculateTotalCost() {

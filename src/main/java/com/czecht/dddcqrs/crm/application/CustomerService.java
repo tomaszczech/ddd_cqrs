@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.czecht.dddcqrs.crm.domain.Address;
 import com.czecht.dddcqrs.crm.domain.Customer;
 import com.czecht.dddcqrs.crm.domain.CustomerFactory;
-import com.czecht.dddcqrs.crm.webui.NewCustomerDto;
+import com.czecht.dddcqrs.crm.webui.AddCustomerDto;
 import com.czecht.dddcqrs.ddd.annotations.domain.application.ApplicationService;
 import com.czecht.dddcqrs.sales.infrastructure.repo.impl.JpaCustomerRepository;
 
@@ -20,13 +20,11 @@ public class CustomerService {
 	@Autowired
 	private CustomerFactory customerFactory;
 
-	public void addCustomer(NewCustomerDto newCustomerDto) {
+	public void addCustomer(AddCustomerDto addCustomerDto) {
 		// todo
-		checkNotNull(newCustomerDto);
-		Address address = new Address(newCustomerDto.getCity(),
-				newCustomerDto.getStreet(),
-				newCustomerDto.getPostCode());
-		Customer customer = customerFactory.create(newCustomerDto.getName(), address);
+		checkNotNull(addCustomerDto);
+		Address address = Address.of(addCustomerDto.getCity(), addCustomerDto.getStreet(), addCustomerDto.getPostCode());
+		Customer customer = customerFactory.create(addCustomerDto.getName(), address);
 		customerRepository.save(customer);
 	}
 }

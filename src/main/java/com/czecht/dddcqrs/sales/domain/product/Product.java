@@ -1,10 +1,13 @@
 package com.czecht.dddcqrs.sales.domain.product;
 
-import javax.persistence.Embedded;
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 
+import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
 import com.czecht.dddcqrs.ddd.annotations.domain.domain.AggregateRoot;
@@ -15,7 +18,11 @@ import com.czecht.dddcqrs.ddd.support.domain.BaseAggregateRoot;
 @AggregateRoot
 public class Product extends BaseAggregateRoot {
 
-	@Embedded
+	private BigDecimal priceAmount;
+
+	private String priceCurrency;
+
+	@Transient
 	private Money price;
 
 	private String name;
@@ -24,21 +31,22 @@ public class Product extends BaseAggregateRoot {
 	private ProductType productType;
 
 	@SuppressWarnings("unused")
-	private Product(){}
+	private Product() {
+	}
 
-	Product(AggregateId aggregateId, Money price, String name, ProductType productType){
+	Product(AggregateId aggregateId, Money price, String name, ProductType productType) {
 		this.aggregateId = aggregateId;
 		this.price = price;
 		this.name = name;
 		this.productType = productType;
 	}
 
-	public boolean isAvailabe(){
-		return ! isRemoved();//TODO dodać więcej reguł domenowych
+	public boolean isAvailabe() {
+		return !isRemoved();//TODO dodać więcej reguł domenowych
 	}
 
 	public Money getPrice() {
-		return price;
+		return Money.of(CurrencyUnit.getInstance(priceCurrency), priceAmount);
 	}
 
 	public String getName() {
@@ -49,8 +57,8 @@ public class Product extends BaseAggregateRoot {
 		return productType;
 	}
 
-//	public ProductData generateSnapshot(){
-//		return new ProductData(getAggregateId(), price, name, productType, new Date());
-//	}
+	//	public ProductData generateSnapshot(){
+	//		return new ProductData(getAggregateId(), price, name, productType, new Date());
+	//	}
 
 }

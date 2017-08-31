@@ -36,7 +36,8 @@ public class OrderingServiceImpl {
 	@Transactional
 	//@PreAuthorize("hasPermission(#clientId, 'ORDER_CREATE')")
 	public AggregateId createOrder(AggregateId clientId) {
-		Order order = orderFactory.create(clientId);
+		Client client = clientRepository.load(clientId);
+		Order order = orderFactory.create(client);
 		orderRepository.save(order);
 		return order.getAggregateId();
 	}

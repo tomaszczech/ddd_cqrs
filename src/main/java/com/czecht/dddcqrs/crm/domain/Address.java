@@ -1,5 +1,7 @@
 package com.czecht.dddcqrs.crm.domain;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.czecht.dddcqrs.ddd.annotations.domain.application.ValueObject;
 
 @Embeddable
+@Access(AccessType.FIELD)
 @ValueObject
 public class Address {
 
@@ -21,26 +24,19 @@ public class Address {
 	@Column
 	private String postCode;
 
-	protected Address() {
-		super();
+	private Address() {
+	}
+
+	public static Address of(String city, String street, String postCode) {
+		return new Address(city, street, postCode);
+	}
+
+	public String getMailAddress(){
+		return new StringBuffer(city).append('\n').append(street).append(' ').append(postCode).toString();
 	}
 
 	public String getCity() {
 		return city;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public Address(String city, String street, String postCode) {
-		this.setCity(city);
-		this.setStreet(street);
-		this.setPostCode(postCode);
 	}
 
 	private void setCity(String city) {
@@ -49,23 +45,6 @@ public class Address {
 		}
 
 		this.city = city;
-	}
-
-	private void setStreet(String street) {
-		if(StringUtils.isEmpty(street)) {
-			throw new IllegalArgumentException("Street cannot be empty");
-		}
-
-		this.street = street;
-	}
-
-	private void setPostCode(String postCode) {
-		if(StringUtils.isEmpty(postCode)) {
-			throw new IllegalArgumentException("Street cannot be empty");
-		}
-		//todo check if postCode have valid format
-
-		this.postCode = postCode;
 	}
 
 	@Override
@@ -87,8 +66,43 @@ public class Address {
 		return hashCodeValue;
 	}
 
+
+
+	public String getStreet() {
+		return street;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	private Address(String city, String street, String postCode) {
+		this.setCity(city);
+		this.setStreet(street);
+		this.setPostCode(postCode);
+	}
+
+
+
+	private void setStreet(String street) {
+		if(StringUtils.isEmpty(street)) {
+			throw new IllegalArgumentException("Street cannot be empty");
+		}
+
+		this.street = street;
+	}
+
+	private void setPostCode(String postCode) {
+		if(StringUtils.isEmpty(postCode)) {
+			throw new IllegalArgumentException("Street cannot be empty");
+		}
+		//todo check if postCode have valid format
+
+		this.postCode = postCode;
 	}
 }

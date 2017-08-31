@@ -23,8 +23,8 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void addCustomer(@RequestBody NewCustomerDto newCustomerDto) {
-		customerService.addCustomer(newCustomerDto);
+	public void addCustomer(@RequestBody AddCustomerDto addCustomerDto) {
+		customerService.addCustomer(addCustomerDto);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

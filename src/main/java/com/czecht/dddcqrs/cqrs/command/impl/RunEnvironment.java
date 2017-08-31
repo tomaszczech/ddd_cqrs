@@ -15,11 +15,8 @@ public class RunEnvironment {
 	public Object run(Object command) {
 		CommandHandler<Object, Object> handler = handlersProvider.getHandler(command);
 
-		//You can add Your own capabilities here: dependency injection, security, transaction management, logging, profiling, spying, storing commands, etc
-
+		//todo: dependency injection, security, transaction management, logging, profiling, spying, storing commands
 		Object result = handler.handle(command);
-
-		//You can add Your own capabilities here
 
 		return result;
 	}
